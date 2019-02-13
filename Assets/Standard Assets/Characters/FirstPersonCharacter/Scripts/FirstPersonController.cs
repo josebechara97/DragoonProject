@@ -66,6 +66,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+            if (Math.Abs(transform.position.x) > 200 || Math.Abs(transform.position.z) > 200) { SceneManager.LoadScene(SceneManager.GetActiveScene().name); } //FIX THIS
             if (hangtime > 0) { hangtime--; }
             RotateView();
             // the jump state needs to read here to make sure it is not missed
@@ -120,7 +121,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir.x = desiredMove.x * speed;
                 m_MoveDir.z = desiredMove.z * speed;
             } else {//FIX THIS
-                m_MoveDir = m_Camera.transform.forward * speed * 30;//FIX THIS
+                m_MoveDir = new Vector3(m_Camera.transform.forward.x, -Math.Abs(m_Camera.transform.forward.y), m_Camera.transform.forward.z) * speed * 30;//FIX THIS
             }//FIX THIS
 
 
