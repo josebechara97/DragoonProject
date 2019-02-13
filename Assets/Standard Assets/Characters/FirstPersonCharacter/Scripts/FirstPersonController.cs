@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
@@ -42,10 +43,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         private int airtime;//FIX THIS
+        private int hangtime;
 
         // Use this for initialization
         private void Start()
         {
+            hangtime = 0;
             airtime = 0;//FIX THIS
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
@@ -63,6 +66,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+            if (hangtime > 0) { hangtime--; }
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump && m_CharacterController.isGrounded)//FIX THIS
@@ -71,20 +75,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
             } else {//FIX THIS
                 if (CrossPlatformInputManager.GetButtonDown("Jump") && airtime == 0) {//FIX THIS
                     airtime = 1;//FIX THIS
-                } else if (CrossPlatformInputManager.GetButtonDown("Jump") && airtime == 1) {//FIX THIS
+                    hangtime = 20;//FIX THIS
+                } else if (hangtime == 0 && airtime == 1) {//FIX THIS
                     airtime = 2;//FIX THIS
                 }//FIX THIS
             }//FIX THIS
 
-            if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
-            {
+            if (!m_PreviouslyGrounded && m_CharacterController.isGrounded) {
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
-            if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
-            {
+            if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
                 m_MoveDir.y = 0f;
             }
 
@@ -117,7 +120,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir.x = desiredMove.x * speed;
                 m_MoveDir.z = desiredMove.z * speed;
             } else {//FIX THIS
-                m_MoveDir = new Vector3(m_Camera.transform.forward.x, -60, m_Camera.transform.forward.z) * speed;//FIX THIS
+                m_MoveDir = m_Camera.transform.forward * speed * 30;//FIX THIS
             }//FIX THIS
 
 
@@ -257,6 +260,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void OnControllerColliderHit(ControllerColliderHit hit)
         {
             Rigidbody body = hit.collider.attachedRigidbody;
+
+            if (hit.gameObject.tag == "Water") {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
             //dont move the rigidbody if the character is on top of it
             if (m_CollisionFlags == CollisionFlags.Below)
             {
