@@ -43,11 +43,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         private int airtime;//FIX THIS
-        private int hangtime;
+        private int hangtime;//
+        private bool hitFoe;
 
         // Use this for initialization
         private void Start()
         {
+            hitFoe = false;
             hangtime = 0;
             airtime = 0;//FIX THIS
             m_CharacterController = GetComponent<CharacterController>();
@@ -70,8 +72,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (hangtime > 0) { hangtime--; }
             RotateView();
             // the jump state needs to read here to make sure it is not missed
-            if (!m_Jump && m_CharacterController.isGrounded)//FIX THIS
-            {//FIX THIS
+            if (!m_Jump && m_CharacterController.isGrounded) {//FIX THIS
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");//FIX THIS
             } else {//FIX THIS
                 if (CrossPlatformInputManager.GetButtonDown("Jump") && airtime == 0) {//FIX THIS
@@ -138,10 +139,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if (airtime == 2) {//FIX THIS
                     airtime = 0;//FIX THIS
                 }//FIX THIS
+            } else if (hitFoe) {//FIX THIS
+                Debug.Log("triggered");
+                m_MoveDir.y = m_JumpSpeed;//FIX THIS
+                PlayJumpSound();//FIX THIS
+                m_Jump = false;//FIX THIS
+                m_Jumping = true;//FIX THIS
+                hitFoe = false;//FIX THIS
             } else if (airtime == 1) {//FIX THIS
                 m_MoveDir = Vector3.zero;//FIX THIS
             } else if (airtime != 2) { //FIX THIS
-                m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
+                m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
             }
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
@@ -264,6 +272,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             if (hit.gameObject.tag == "Water") {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
+            if (hit.gameObject.tag == "LandEnemy") {
+                hitFoe = true;
             }
 
             //dont move the rigidbody if the character is on top of it

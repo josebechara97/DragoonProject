@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMove : MonoBehaviour
 {
 
-    public Rigidbody rb;
+    Rigidbody rb;
     GameObject tower;
     GameObject enemy;
     public GameObject player;
@@ -14,6 +14,7 @@ public class EnemyMove : MonoBehaviour
     float distance;
 
     public float speed = 10.0f;
+    private bool shrinking;
     private Transform towerTarget;
     private Transform playerTarget;
 
@@ -39,10 +40,15 @@ public class EnemyMove : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (shrinking) {
+            transform.localScale *= 0.9f;
+            if (transform.localScale.x < 0.1f) {
+                Destroy(this.gameObject);
+            }
+        }
         // Moves enemy towards Tower
         float step = speed * Time.deltaTime; // calculate distance to move
-        if (isTouchingTower == false)
-        {
+        if (isTouchingTower == false) {
             transform.position = Vector3.MoveTowards(transform.position, towerTarget.position, step);
         }
 
@@ -54,19 +60,16 @@ public class EnemyMove : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
 
         // Tested but did not recognize player, I believe the MoveTowards function in FixedUpdate 
         // overrules this.
-        if (other.gameObject.CompareTag("Player"))
-        {
-            transform.Rotate(Vector3.right * 90);
-            transform.Translate(Vector3.forward * 20);
+        if (other.gameObject.tag == "Player") {
+            shrinking = true;
         }
 
-        if (other.gameObject.CompareTag("Tower"))
-        {
+        if (other.gameObject.CompareTag("Tower")) {
             isTouchingTower = true;
             speed = 0;
 
