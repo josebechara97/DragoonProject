@@ -1,34 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Tower : MonoBehaviour
 {
-    public static float health;
+    public float health;
     public Text healthLabel;
-    public int Health = 100;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        health = 100;
+    private void Start() {
+       health += 100.0f;
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        healthLabel.text = "Tower Health: " + health;
+    void Update() {
+        healthLabel.text = "Tower Health: " + Math.Round(health);
     }
 
     private void OnTriggerEnter(Collider other) {
         if (other.gameObject.CompareTag("LandEnemy")) {
-            InvokeRepeating("Subtract", 1f, 1f);
+            InvokeRepeating("Subtract", 1.0f, 1.0f);
         }
     }
 
     void Subtract() {
-        health -= 1;
-
+        health -= 1.0f;
     }
 }

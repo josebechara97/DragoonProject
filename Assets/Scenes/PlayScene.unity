@@ -462,8 +462,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec2c507f6a0546899f9745d86ada7ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   healthLabel: {fileID: 1192063031}
-  Health: 100
 --- !u!1 &451832835
 GameObject:
   m_ObjectHideFlags: 0
@@ -664,6 +664,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a7967d9bce7a4724af383ee09b263e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  kills: 0
+  secondsSurvived: 0
   scoreLabel: {fileID: 1387179634}
 --- !u!1 &1124029696
 GameObject:
@@ -763,8 +765,8 @@ MonoBehaviour:
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: New Text
 --- !u!222 &1192063032
@@ -774,7 +776,7 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1192063029}
-  m_CullTransparentMesh: 1
+  m_CullTransparentMesh: 0
 --- !u!1 &1211796683
 GameObject:
   m_ObjectHideFlags: 0
@@ -974,8 +976,8 @@ MonoBehaviour:
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: New Text
 --- !u!222 &1387179635
