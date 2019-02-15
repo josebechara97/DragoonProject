@@ -122,7 +122,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir.x = desiredMove.x * speed;
                 m_MoveDir.z = desiredMove.z * speed;
             } else {//FIX THIS
-                m_MoveDir = new Vector3(m_Camera.transform.forward.x, -Math.Abs(m_Camera.transform.forward.y), m_Camera.transform.forward.z) * speed * 30;//FIX THIS
+                m_MoveDir = new Vector3(m_Camera.transform.forward.x, -Math.Abs(m_Camera.transform.forward.y), m_Camera.transform.forward.z) * speed * 60;//FIX THIS
             }//FIX THIS
 
 
