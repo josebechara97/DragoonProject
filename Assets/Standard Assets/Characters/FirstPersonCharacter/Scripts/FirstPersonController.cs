@@ -140,7 +140,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     airtime = 0;//FIX THIS
                 }//FIX THIS
             } else if (hitFoe) {//FIX THIS
-                Debug.Log("triggered");
                 m_MoveDir.y = m_JumpSpeed;//FIX THIS
                 PlayJumpSound();//FIX THIS
                 m_Jump = false;//FIX THIS

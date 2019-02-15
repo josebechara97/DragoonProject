@@ -8,6 +8,7 @@ TagManager:
   - Water
   - LandEnemy
   - Tower
+  - Score
   layers:
   - Default
   - TransparentFX

@@ -9,6 +9,7 @@ public class EnemyMove : MonoBehaviour
     GameObject tower;
     GameObject enemy;
     public GameObject player;
+    public GameObject score;
 
     float angle;
     float distance;
@@ -67,12 +68,12 @@ public class EnemyMove : MonoBehaviour
         // overrules this.
         if (other.gameObject.tag == "Player") {
             shrinking = true;
+            score.GetComponent<ScoreManagement>().kills++;
         }
 
         if (other.gameObject.CompareTag("Tower")) {
             isTouchingTower = true;
             speed = 0;
-
         }
     }
 }
