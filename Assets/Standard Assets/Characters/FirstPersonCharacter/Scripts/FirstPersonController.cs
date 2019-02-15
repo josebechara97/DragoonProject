@@ -69,7 +69,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
             if (Math.Abs(transform.position.x) > 200 || Math.Abs(transform.position.z) > 200) { SceneManager.LoadScene(SceneManager.GetActiveScene().name); } //FIX THIS
-            if (hangtime > 0) { hangtime--; }
+            if (hangtime > 0) { hangtime--; m_Camera.fieldOfView++; } //FIX THIS
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump && m_CharacterController.isGrounded) {//FIX THIS
@@ -88,6 +88,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 PlayLandingSound();
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
+                m_Camera.fieldOfView = 60;//FIX THIS
             }
             if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
                 m_MoveDir.y = 0f;
@@ -273,8 +274,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 
-            if (hit.gameObject.tag == "LandEnemy") {
-                hitFoe = true;
+            if (hit.gameObject.tag == "LandEnemy") {//FIX THIS
+                m_Camera.fieldOfView = 60;//FIX THIS
+                hitFoe = true;//FIX THIS
             }
 
             //dont move the rigidbody if the character is on top of it
