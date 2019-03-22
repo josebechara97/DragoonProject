@@ -68,14 +68,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+            bool activeInput = CrossPlatformInputManager.GetButtonDown("Jump") || CrossPlatformInputManager.GetButtonDown("Fire1");
             if (Math.Abs(transform.position.x) > 200 || Math.Abs(transform.position.z) > 200) { SceneManager.LoadScene(SceneManager.GetActiveScene().name); } //FIX THIS
             if (hangtime > 0) { hangtime--; m_Camera.fieldOfView++; } //FIX THIS
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump && m_CharacterController.isGrounded) {//FIX THIS
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");//FIX THIS
+                m_Jump = activeInput;//FIX THIS
             } else {//FIX THIS
-                if (CrossPlatformInputManager.GetButtonDown("Jump") && airtime == 0) {//FIX THIS
+                if (activeInput && airtime == 0) {//FIX THIS
                     airtime = 1;//FIX THIS
                     hangtime = 20;//FIX THIS
                 } else if (hangtime == 0 && airtime == 1) {//FIX THIS
