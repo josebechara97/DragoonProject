@@ -50,15 +50,18 @@ public class EnemyMove : MonoBehaviour
         // Moves enemy towards Tower
         float step = speed * Time.deltaTime; // calculate distance to move
         if (isTouchingTower == false) {
+            transform.LookAt(towerTarget); //rotate to player
             transform.position = Vector3.MoveTowards(transform.position, towerTarget.position, step);
         }
 
+        //Commented out by Luis because not sure if that is causing the problems
+        /*
         // Rotate 90 degrees to the right and move 20 spaces if near PLAYER
         if (Mathf.Abs(angle) < 90 && distance < 10) {
             transform.Rotate(Vector3.right * 90);
             transform.Translate(Vector3.forward * 20);
             //transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-        }
+        }*/
     }
 
     private void OnCollisionEnter(Collision other)
