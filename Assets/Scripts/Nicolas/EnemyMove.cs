@@ -2,8 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMove : MonoBehaviour
-{
+public class EnemyMove : MonoBehaviour {
 
     Rigidbody rb;
     GameObject tower;
@@ -22,9 +21,7 @@ public class EnemyMove : MonoBehaviour
     bool isTouchingTower = false;
 
     // Start is called before the first frame update
-    void Start()
-    {
-
+    void Start()    {
         rb = GetComponent<Rigidbody>();
 
         tower = GameObject.FindGameObjectWithTag("Tower");
@@ -39,8 +36,7 @@ public class EnemyMove : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         if (shrinking) {
             transform.localScale *= 0.9f;
             if (transform.localScale.x < 0.1f) {
@@ -64,8 +60,7 @@ public class EnemyMove : MonoBehaviour
         }*/
     }
 
-    private void OnCollisionEnter(Collision other)
-    {
+    private void OnCollisionEnter(Collision other) {
 
         // Tested but did not recognize player, I believe the MoveTowards function in FixedUpdate 
         // overrules this.
