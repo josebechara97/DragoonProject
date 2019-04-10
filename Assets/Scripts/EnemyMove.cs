@@ -18,6 +18,8 @@ public class EnemyMove : MonoBehaviour
     private bool shrinking;
     private Transform towerTarget;
     private Transform playerTarget;
+    private Animator animator;
+
 
     bool isTouchingTower = false;
 
@@ -31,6 +33,8 @@ public class EnemyMove : MonoBehaviour
         enemy = GameObject.FindGameObjectWithTag("LandEnemy");
         player = GameObject.FindGameObjectWithTag("Player");
 
+        animator = this.gameObject.transform.GetChild(0).GetComponent<Animator>();
+
         towerTarget = tower.transform;
         playerTarget = player.transform;
         Vector3 directionToPlayer = transform.position - playerTarget.position;
@@ -42,6 +46,7 @@ public class EnemyMove : MonoBehaviour
     void FixedUpdate()
     {
         if (shrinking) {
+            animator.SetBool("dead", true);
             transform.localScale *= 0.9f;
             if (transform.localScale.x < 0.1f) {
                 Destroy(this.gameObject);
@@ -52,6 +57,11 @@ public class EnemyMove : MonoBehaviour
         if (isTouchingTower == false) {
             transform.LookAt(towerTarget); //rotate to player
             transform.position = Vector3.MoveTowards(transform.position, towerTarget.position, step);
+            animator.SetBool("attacking", false);
+        }
+        else
+        {
+            animator.SetBool("attacking", true);
         }
 
         //Commented out by Luis because not sure if that is causing the problems
