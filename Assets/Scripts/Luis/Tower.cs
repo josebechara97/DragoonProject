@@ -2,10 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Tower : MonoBehaviour
-{
+public class Tower : MonoBehaviour {
     public float health;
     public Text healthLabel;
+    public Text thoughts;
 
     private void Start() {
        health += 100.0f;
@@ -14,15 +14,16 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update() {
         healthLabel.text = "Tower Health: " + Math.Round(health);
-    }
-
-    private void OnTriggerEnter(Collider other) {
-        if (other.gameObject.CompareTag("LandEnemy")) {
-            InvokeRepeating("Subtract", 1.0f, 1.0f);
+        if (health <= 0) {
+            Destroy(this.gameObject);
         }
     }
 
-    void Subtract() {
+    public void Subtract() {
         health -= 1.0f;
+    }
+
+    private void OnDestroy() {
+        thoughts.text = "No... I failed...";
     }
 }

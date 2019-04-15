@@ -4,35 +4,16 @@ using UnityEngine;
 
 public class EnemyMove : MonoBehaviour {
 
-    Rigidbody rb;
-    GameObject tower;
-    GameObject enemy;
-    public GameObject player;
+    public float speed = 10.0f;
     public GameObject score;
 
-    float angle;
-    float distance;
+    private bool shrinking = false;
+    private bool isTouchingTower = false;
+    private float cooldown = 0;
+    private GameObject tower;
 
-    public float speed = 10.0f;
-    private bool shrinking;
-    private Transform towerTarget;
-    private Transform playerTarget;
-
-    bool isTouchingTower = false;
-
-    // Start is called before the first frame update
-    void Start()    {
-        rb = GetComponent<Rigidbody>();
-
+    private void Start() {
         tower = GameObject.FindGameObjectWithTag("Tower");
-        enemy = GameObject.FindGameObjectWithTag("LandEnemy");
-        player = GameObject.FindGameObjectWithTag("Player");
-
-        towerTarget = tower.transform;
-        playerTarget = player.transform;
-        Vector3 directionToPlayer = transform.position - playerTarget.position;
-        angle = Vector3.Angle(transform.forward, directionToPlayer);
-        distance = directionToPlayer.magnitude;
     }
 
     // Update is called once per frame
@@ -45,19 +26,15 @@ public class EnemyMove : MonoBehaviour {
         }
         // Moves enemy towards Tower
         float step = speed * Time.deltaTime; // calculate distance to move
-        if (isTouchingTower == false) {
-            transform.LookAt(towerTarget); //rotate to player
-            transform.position = Vector3.MoveTowards(transform.position, towerTarget.position, step);
+        if (!isTouchingTower) {
+            transform.LookAt(tower.transform);
+            transform.position = Vector3.MoveTowards(transform.position, tower.transform.position, step);
+        } else if (!shrinking) {
+            cooldown -= Time.deltaTime;
+            if (cooldown < 1) {
+                Attack();
+            }
         }
-
-        //Commented out by Luis because not sure if that is causing the problems
-        /*
-        // Rotate 90 degrees to the right and move 20 spaces if near PLAYER
-        if (Mathf.Abs(angle) < 90 && distance < 10) {
-            transform.Rotate(Vector3.right * 90);
-            transform.Translate(Vector3.forward * 20);
-            //transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-        }*/
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -72,6 +49,12 @@ public class EnemyMove : MonoBehaviour {
         if (other.gameObject.CompareTag("Tower")) {
             isTouchingTower = true;
             speed = 0;
+            Attack();
         }
+    }
+
+    void Attack() {
+        tower.GetComponent<Tower>().Subtract();
+        cooldown = 3;
     }
 }
