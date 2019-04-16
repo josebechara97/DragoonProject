@@ -6,7 +6,6 @@ public class EnemyMove : MonoBehaviour {
 
     public float speed = 10.0f;
     public GameObject score;
-    public GameObject children;
 
     private bool shrinking = false;
     private bool isTouchingTower = false;
@@ -45,10 +44,6 @@ public class EnemyMove : MonoBehaviour {
         if (other.gameObject.tag == "Player") {
             shrinking = true;
             score.GetComponent<ScoreManagement>().kills++;
-            GameObject clone = Instantiate(children);
-            clone.transform.position = new Vector3(Random.Range(clone.transform.position.x - 200, clone.transform.position.x + 200), 0, Random.Range(clone.transform.position.x - 200, clone.transform.position.x + 200));
-            clone.GetComponent<EnemyMove>().speed *= 1.5f;
-            clone.SetActive(true);
         }
 
         if (other.gameObject.CompareTag("Tower")) {
@@ -61,11 +56,5 @@ public class EnemyMove : MonoBehaviour {
     void Attack() {
         tower.GetComponent<Tower>().Subtract();
         cooldown = 3;
-    }
-
-    private void OnDestroy() {
-        GameObject clone = Instantiate(children);
-        clone.transform.position = new Vector3(Random.Range(-750, 750), 0, Random.Range(-750, 750));
-        clone.GetComponent<EnemyMove>().speed *= 1.5f;
     }
 }

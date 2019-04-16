@@ -13,7 +13,6 @@ public class ScoreManagement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //CountTime(); What's this for?
         secondsSurvived += Time.deltaTime;
         scoreLabel.text = "Score: " + Math.Round(FinalScore());
     }
