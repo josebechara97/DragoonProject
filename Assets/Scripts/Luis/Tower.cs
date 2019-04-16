@@ -24,6 +24,8 @@ public class Tower : MonoBehaviour {
     }
 
     private void OnDestroy() {
-        thoughts.text = "No... I failed...";
+        if (thoughts) {
+            thoughts.text = "No... I failed...";
+        }
     }
 }
