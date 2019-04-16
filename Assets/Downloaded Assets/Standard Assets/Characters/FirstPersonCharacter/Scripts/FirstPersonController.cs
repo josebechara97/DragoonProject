@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
@@ -9,8 +10,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (CharacterController))]
     [RequireComponent(typeof (AudioSource))]
-    public class FirstPersonController : MonoBehaviour
-    {
+    public class FirstPersonController : MonoBehaviour {
+
+        public Transform skySpear;//FIX THIS
+        public Transform handSpear;//FIX THIS
+        public GameObject spear;//FIX THIS
+        public Text thoughts;//FIX THIS
+
         [SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
@@ -43,12 +49,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private bool m_Jumping;
         private AudioSource m_AudioSource;
         private int airtime;//FIX THIS
-        private int hangtime;//
-        private bool hitFoe;
+        private int hangtime;//FIX THIS
+        private bool hitFoe;//FIX THIS
 
         // Use this for initialization
-        private void Start()
-        {
+        private void Start() {
             hitFoe = false;
             hangtime = 0;
             airtime = 0;//FIX THIS
@@ -66,10 +71,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 
         // Update is called once per frame
-        private void Update()
-        {
+        private void Update() {
             bool activeInput = CrossPlatformInputManager.GetButtonDown("Jump") || CrossPlatformInputManager.GetButtonDown("Fire1");
-            if (Math.Abs(transform.position.x) > 200 || Math.Abs(transform.position.z) > 200) { SceneManager.LoadScene(SceneManager.GetActiveScene().name); } //FIX THIS
             if (hangtime > 0) { hangtime--; m_Camera.fieldOfView++; } //FIX THIS
             RotateView();
             // the jump state needs to read here to make sure it is not missed
@@ -112,6 +115,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float speed;
             GetInput(out speed);
             if (airtime != 2) {//FIX THIS
+                spear.transform.rotation = handSpear.rotation;//FIX THIS
+                spear.transform.localScale = handSpear.localScale;//FIX THIS
+                spear.transform.position = handSpear.position;//FIX THIS
+
                 // always move along the camera forward as it is the direction that it being aimed at
                 Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
 
@@ -124,6 +131,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir.x = desiredMove.x * speed;
                 m_MoveDir.z = desiredMove.z * speed;
             } else {//FIX THIS
+                spear.transform.rotation = skySpear.rotation;//FIX THIS
+                spear.transform.localScale = skySpear.localScale;//FIX THIS
+                spear.transform.position = skySpear.position;//FIX THIS
                 m_MoveDir = new Vector3(m_Camera.transform.forward.x, -Math.Abs(m_Camera.transform.forward.y), m_Camera.transform.forward.z) * speed * 60;//FIX THIS
             }//FIX THIS
 
@@ -267,15 +277,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private void OnControllerColliderHit(ControllerColliderHit hit)
-        {
+        private void OnControllerColliderHit(ControllerColliderHit hit) {
             Rigidbody body = hit.collider.attachedRigidbody;
 
             if (hit.gameObject.tag == "Water") {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
 
+            if (hit.gameObject.tag == "Walls") {//FIX THIS
+                thoughts.text = "No. Back to the fight.";//FIX THIS
+            }//FIX THIS
+
             if (hit.gameObject.tag == "LandEnemy") {//FIX THIS
+                thoughts.text = ""; //FIX THIS
                 m_Camera.fieldOfView = 60;//FIX THIS
                 hitFoe = true;//FIX THIS
             }

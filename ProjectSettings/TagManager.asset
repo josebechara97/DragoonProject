@@ -9,6 +9,7 @@ TagManager:
   - LandEnemy
   - Tower
   - Score
+  - Walls
   layers:
   - Default
   - TransparentFX
